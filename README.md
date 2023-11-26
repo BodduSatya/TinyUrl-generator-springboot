@@ -42,7 +42,12 @@ ShortLink generator using SpringBoot &amp; ReactJS
             {
             "url":"https://www.facebook.com"
             }
-![img_1.png](img_1.png)
-![img_2.png](img_2.png)
-![img.png](img.png)
-![img_3.png](img_3.png)
+
+![Screenshot 2023-11-26 161142](https://github.com/BodduSatya/TinyUrl-generator-springboot/assets/24984593/7ddbe611-7906-48bc-8174-841055505c20)
+![Screenshot 2023-11-26 161215](https://github.com/BodduSatya/TinyUrl-generator-springboot/assets/24984593/4e4d269b-8e89-49ec-8566-153b34fa7486)
+![Screenshot 2023-11-26 161109](https://github.com/BodduSatya/TinyUrl-generator-springboot/assets/24984593/5312deee-4031-4623-b03f-8467e77b909f)
+![Screenshot 2023-11-26 161305](https://github.com/BodduSatya/TinyUrl-generator-springboot/assets/24984593/8e9dd639-e561-4460-a44d-5e769c6087dd)
+
+
+
+
