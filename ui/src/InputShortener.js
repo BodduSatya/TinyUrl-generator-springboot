@@ -2,6 +2,7 @@ import { useState } from "react"
 import { ToastContainer, toast } from 'react-toastify';
 
 const InputShortener = ({ setInputValue }) => {
+
   const [value, setValue] = useState("");
 
   const handleClick = () => {

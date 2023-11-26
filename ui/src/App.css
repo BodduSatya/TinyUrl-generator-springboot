@@ -205,3 +205,13 @@
   bottom: -98px;
   animation-delay: 6s;
 }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #f8f8f8; /* Change this to your desired background color */
+  padding: 10px; /* Adjust the padding as needed */
+  text-align: center;
+  border-top: 1px solid #ddd; /* Optional: Add a border at the top of the footer */
+}

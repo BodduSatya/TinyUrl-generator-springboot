@@ -26,7 +26,14 @@ public class Url {
     @Column(name="EXPIRYDATE")
     private LocalDateTime expiryDate;
 
+    @Column(name="CLICKS")
+    private int clicks;
+
     public Url() {
+    }
+
+    public Url(String url) {
+        this.url = url;
     }
 
     public Url(String id, String shortUrl, String url, LocalDateTime created) {
@@ -74,5 +81,13 @@ public class Url {
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public int getClicks() {
+        return clicks;
+    }
+
+    public void setClicks(int clicks) {
+        this.clicks = clicks;
     }
 }

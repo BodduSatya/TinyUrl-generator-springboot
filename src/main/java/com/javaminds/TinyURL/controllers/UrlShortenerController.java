@@ -3,10 +3,9 @@ package com.javaminds.TinyURL.controllers;
 import com.google.common.hash.Hashing;
 
 import java.net.URI;
+import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import javax.validation.constraints.NotNull;
 
 import com.javaminds.TinyURL.exception.ResourceNotFoundException;
@@ -27,35 +26,26 @@ public class UrlShortenerController {
     @Value("${global.url}")
     private String globalURL;
 
-   public static HashMap<String,Object> data = new LinkedHashMap();
-
     @Autowired
     private TinyURLRepository urlRepo;
     /**
-     * Get a short URL.
+     * Navigate to full URL by accessing short URL.
      */
     @GetMapping("/{id}")
     @ResponseBody
     public ResponseEntity getUrl(@PathVariable String id) {
-//        Url url = (Url)data.get(id);
-//        if (url == null) {
-//            ErrorResponse error = new ErrorResponse("id", id, "Short URL is not valid.");
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
-//        }
-
         Url url =  urlRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Short URL is not valid" ));
-//        return ResponseEntity.ok(employee);
-
-//        return ResponseEntity.ok(url);
+        url.setClicks(url.getClicks()+1);
+        urlRepo.save(url);
         return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(url.getUrl())).build();
     }
 
     /**
-     * Generate a short URL.
+     * Description : Generate a short URL from get request
      */
-    @PostMapping("/")
+    @PostMapping("/v1/shorten")
     @ResponseBody
-    public ResponseEntity postUrl(@RequestBody @NotNull Url url) {
+    public ResponseEntity postUrl(@RequestBody @NotNull Url url,@RequestHeader String api_key) {
         UrlValidator validator = new UrlValidator( new String[]{"http", "https"} );
         // if invalid url, return error
         if (!validator.isValid(url.getUrl())) {
@@ -67,11 +57,37 @@ public class UrlShortenerController {
         url.setId(id);
         url.setShortUrl(globalURL+id);
         url.setCreated(LocalDateTime.now());
-//        data.put(url.getId(), url);
         urlRepo.save(url);
         return ResponseEntity.ok(url);
     }
 
+    /**
+     * Description : Generate a short URL from post request
+     */
+    @GetMapping("/v1/shorten")
+    @ResponseBody
+    public ResponseEntity postUrl(@RequestParam @NotNull String url, @RequestParam String api_key) {
+        url = URLDecoder.decode(url,StandardCharsets.UTF_8);
+        Url urlObj = new Url(url);
+        UrlValidator validator = new UrlValidator( new String[]{"http", "https"} );
+
+        // if invalid url, return error
+        if (!validator.isValid(urlObj.getUrl())) {
+            ErrorResponse error = new ErrorResponse("url", urlObj.getUrl(), "Invalid URL, URL should prefixed with http/https.");
+            return ResponseEntity.badRequest().body(error);
+        }
+
+        String id = Hashing.murmur3_32().hashString(urlObj.getUrl(), StandardCharsets.UTF_8).toString();
+        urlObj.setId(id);
+        urlObj.setShortUrl(globalURL+id);
+        urlObj.setCreated(LocalDateTime.now());
+        urlRepo.save(urlObj);
+        return ResponseEntity.ok(urlObj);
+    }
+
+    /*
+    * Short Link Home Page
+    * */
     @GetMapping("/")
     @ResponseBody
     public ResponseEntity welcome(){

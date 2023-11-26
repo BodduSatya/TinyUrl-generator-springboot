@@ -12,8 +12,9 @@ const LinkResult = ({ inputValue }) => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const res = await axios(`https://api.shrtco.de/v2/shorten?url=${inputValue}`);
-      setShortenLink(res.data.result.full_short_link);
+      const res = await axios(`http://localhost/v1/shorten?api_key=&url=${inputValue}`);
+      console.log('res',res)
+      setShortenLink(res.data.shortUrl);
     } catch(err) {
       setError(err);
     } finally {
@@ -22,7 +23,7 @@ const LinkResult = ({ inputValue }) => {
   }
 
   useEffect(() => {
-    if(inputValue.length) {
+    if(inputValue.length>0) {
       fetchData();
     }
   }, [inputValue]);
@@ -39,7 +40,7 @@ const LinkResult = ({ inputValue }) => {
     return <p className="noData">Loading...</p>
   }
   if(error) {
-    return <p className="noData">Something wne t wrong :(</p>
+    return <p className="noData">Something went wrong! :(</p>
   }
 
 

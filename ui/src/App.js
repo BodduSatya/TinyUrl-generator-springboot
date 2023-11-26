@@ -5,6 +5,7 @@ import InputShortener from './InputShortener';
 import LinkResult from './LinkResult';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Footer from "./Footer";
 
 function App() {
   const [inputValue, setInputValue] = useState("");
@@ -28,6 +29,7 @@ function App() {
             theme="light"
         />
         <ToastContainer />
+        <Footer/>
     </div>
   );
 }
